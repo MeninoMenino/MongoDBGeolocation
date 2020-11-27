@@ -6,6 +6,7 @@ import com.mm.mmtest.repository.UserRepository;
 import com.mm.mmtest.service.UserService;
 import com.mm.mmtest.service.util.UserUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     @Autowired
     UserUtilService userUtilService;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     @Override
     public List<User> listUsers() {
@@ -31,7 +35,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User insertUser(InsertUserDto userDto) {
         User user = userUtilService.convertDtoToEntity(userDto);
-        return userRepository.save(user);
+        return mongoTemplate.save(user);
+        //return userRepository.save(user);
     }
 
     @Override
